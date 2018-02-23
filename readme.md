@@ -39,6 +39,30 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
 1. Visual Studio 2015 Update 3 or later with [.Net Core SDK](https://www.microsoft.com/net/learn/get-started/windows#windows) installed.
 
+## Setting up the Environment
+
+1. Click **Deploy To Azure** to provision a Windows Server 2016 virtual machine along with SQL Express 2017 and browsers - Chrome and FireFox.
+
+   [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FVSTS-DevOps-Labs%2Fmaster%2Farmtemplates%2Fselenium%2Fazuredeploy.json)
+
+1. It should take approximately 5-10 minutes to provision the resources. Once the deployment is successful, you will see the resources as shown.
+
+   ![azure_resources](images/azure_resources.png)
+
+## Setting up the VSTS team project
+
+1. Use the [VSTS Demo Generator](https://vstsdemogenerator.azurewebsites.net/?Name=Selenium&TemplateId=77367) to provision the project on your VSTS account.
+
+   > **VSTS Demo Generator** helps you create team projects on your VSTS account with sample content that include source code, work items,iterations, service endpoints, build and release definitions based on the template you choose during the configuration.
+
+   ![VSTSDemogenerator](images/VSTSDemogenerator.png)
+
+    {% include note.html content= "This URL will automatically select **AzureFunctions** template in the demo generator. If you want to try other projects, use this URL instead -[https://vstsdemogenerator.azurewebsites.net/](https://vstsdemogenerator.azurewebsites.net/)
+
+1. Once the project is provisioned, click the URL to navigate to the project.
+
+   ![VSTSDemogenerator2](images/VSTSDemogenerator2.png)
+
 ## Exercise 1: Cloning an existing repository
 
 1. Sign in to your **Visual Studio Team Services** account and browse to **PartsUnlimited** project.
@@ -65,7 +89,7 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
  1. Create a new API project in **PartsUnlimited** solution. Right click on solution, then click on **Add** and select **New Project...**
 
- 2. Select **Web** under "Visual C#" category, select **ASP.NET Core Web Application (.NET Core)** as the type of this project, enter **PartsUnlimited.API** into the name field and append **\scr** at the end of the location, then click on "OK".
+ 2. Select **Web** under "Visual C#" category, select **ASP.NET Core Web Application (.NET Core)** as the type of this project, enter **PartsUnlimited.API** into the name field and append **\src** at the end of the location, then click on "OK".
 
      ![createapiproject](images/createapiproject.png)
 
