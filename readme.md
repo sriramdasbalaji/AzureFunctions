@@ -37,35 +37,37 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
     You should treat Personal Access Tokens like passwords. It is recommended that you save them somewhere safe so that you can re-use them for future requests.
 
-1. Visual Studio 2015 Update 3 or later with [.Net Core SDK](https://www.microsoft.com/net/learn/get-started/windows#windows) installed.
+1. Visual Studio 2017 version 15.4 or later  with [.Net Core SDK](https://www.microsoft.com/net/learn/get-started/windows#windows) and [Azure Development Tools for Visual Studio](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs) are installed.
 
 ## Setting up the Environment
 
-1. Click **Deploy To Azure** to provision a Windows Server 2016 virtual machine along with SQL Express 2017 and browsers - Chrome and FireFox.
+1. Click **Deploy To Azure** to provision a Azure appservice plan and two web apps.
 
-   [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FVSTS-DevOps-Labs%2Fmaster%2Farmtemplates%2Fselenium%2Fazuredeploy.json)
+   [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsriramdasbalaji%2FAzureFunctions%2Fmaster%2Farm%2520template%2Fazuredeploy.json)
 
 1. It should take approximately 5-10 minutes to provision the resources. Once the deployment is successful, you will see the resources as shown.
 
    ![azure_resources](images/azure_resources.png)
 
+
 ## Setting up the VSTS team project
 
-1. Use the [VSTS Demo Generator](https://vstsdemogenerator.azurewebsites.net/?Name=Selenium&TemplateId=77367) to provision the project on your VSTS account.
+1. Use the [VSTS Demo Generator](https://vstsdemobuildertest.azurewebsites.net/) to provision the project on your VSTS account.
 
    > **VSTS Demo Generator** helps you create team projects on your VSTS account with sample content that include source code, work items,iterations, service endpoints, build and release definitions based on the template you choose during the configuration.
 
    ![VSTSDemogenerator](images/VSTSDemogenerator.png)
 
-    {% include note.html content= "This URL will automatically select **AzureFunctions** template in the demo generator. If you want to try other projects, use this URL instead -[https://vstsdemogenerator.azurewebsites.net/](https://vstsdemogenerator.azurewebsites.net/)
+    This URL will automatically select **AzureFunctions** template in the demo generator. If you want to try other projects, use this URL instead -[https://vstsdemogenerator.azurewebsites.net/](https://vstsdemogenerator.azurewebsites.net/)
 
 1. Once the project is provisioned, click the URL to navigate to the project.
 
    ![VSTSDemogenerator2](images/VSTSDemogenerator2.png)
 
+
 ## Exercise 1: Cloning an existing repository
 
-1. Sign in to your **Visual Studio Team Services** account and browse to **PartsUnlimited** project.
+1. Sign in to your **Visual Studio Team Services** account and browse to **AzureFunctions** project (project provisioned by VSTS Demo generator).
 
    ![browsevstsproject](images/browsevstsproject.png)
 
@@ -75,11 +77,11 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
 3. You might be prompted to sign into to your account from Visual Studio. Sign in to your account
 
-4. Set the local path where you want the local repository to be placed and select Clone.
+4. Set the local path where you want the local repository to be placed and select **Clone**.
 
      ![clonepath](images/clonepath.png)
 
-5. Select Show Folder View under Solutions to see all the solutions in the local git folder and double click on **PartsUnlimited.sln** to open the project.
+5. In Team Explorer under **Solutions** you will see all the solutions in the local git folder and double click on **PartsUnlimited.sln** to open the project.
 
      ![openproject](images/opensolution.png)
 
@@ -105,7 +107,7 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
     ![addreference](images/addreference.png)
 
-6.  Define the original API. Right click on **Controllers** folder, click on **Add**, then **Class**.
+6.  Define the original API. Right click on **Controllers** folder, click on **Add**, then select **Class**.
    ![addspecialcontroller](images/addspecialcontroller.png)
 
 7. Enter **SpecialsController.cs** as the name of this class and click on **Add**.
@@ -181,7 +183,7 @@ namespace PartsUnlimited.API.Controllers
 ```
 
 9. Define an API with a new feature.
-Similarly create a new class, name it **V2SpecialsController.cs** and copy the following code into it:
+Similarly create a new class under Controllers, name it **V2SpecialsController.cs** and copy the following code into it:
 
 ```csharp
 using System.Collections.Generic;
@@ -204,7 +206,6 @@ namespace PartsUnlimited.API.Controllers
                     Title = "Filter Set V2",
                     CategoryId = 5,
                     Price = 28.99M,
-                    DiscountedPrice=25.99M,
                     Discount="30%",
                     SalePrice = 28.99M,
                     ProductArtUrl = "https://raw.githubusercontent.com/Microsoft/PartsUnlimited/master/src/PartsUnlimitedWebsite/images/product_oil_filters.jpg",
@@ -221,7 +222,6 @@ namespace PartsUnlimited.API.Controllers
                     CategoryId = 5,
                     Price = 34.49M,
                     SalePrice = 34.49M,
-                    DiscountedPrice=31.49M,
                     Discount="30%",
                     ProductArtUrl = "https://raw.githubusercontent.com/Microsoft/PartsUnlimited/master/src/PartsUnlimitedWebsite/images/product_oil_oil-filter-combo.jpg",
                     ProductDetails = "{ \"Filter Type\" : \"Canister\", \"Thread Size\" : \"0.75-16 in.\", \"Anti-Drainback Valve\" : \"Yes\", \"Size\" : \"1.1 gal.\", \"Synthetic\" : \"No\" }",
@@ -237,7 +237,6 @@ namespace PartsUnlimited.API.Controllers
                     CategoryId = 5,
                     Price = 36.49M,
                     SalePrice = 36.49M,
-                    DiscountedPrice=31.99M,
                     Discount="30%",
                     ProductArtUrl = "https://raw.githubusercontent.com/Microsoft/PartsUnlimited/master/src/PartsUnlimitedWebsite/images/product_oil_premium-oil.jpg",
                     ProductDetails = "{ \"Size\" :  \"1.1 Gal.\" , \"Synthetic\" : \"Yes\"}",
@@ -263,7 +262,7 @@ namespace PartsUnlimited.API.Controllers
 
 In this exercise we will Build and Deploy the PartsUnlimited website project and API projects to Azure app services
 
-1. In your VSTS account click on **Build and Release** hub and select **PartsUnlimited-CI** and click on **Edit**
+1. In your VSTS account click on **Build and Release** hub and select **AzureFunctions-Build** and click on **Edit**
 
    ![openbuilddefinition](images/openbuilddefinition.png)
 
@@ -275,7 +274,7 @@ You will see a build has been queued. Click on the Build number to see the progr
 
     ![buildoutcome](images/buildoutcome.png)
 
-3. Once the Build is Success Click on the **Releases** tab. Select **PartsUnlimited CD** release definition and click **Edit**
+3. Once the Build is succeeded Click on the **Releases** tab. Select **AzureFunctions_Deploy** release definition and click **Edit**
 
    ![openreleasedef](images/openreleasedef.png)
 
@@ -291,21 +290,29 @@ You will see a build has been queued. Click on the Build number to see the progr
 
    ![tasksinrelease](images/tasksinrelease.png)
 
-5. Select **Deploy Web app** task and verify you have valid **Azure subscription** selected in the task and **Partsunlimitedwebapp** is selected in App service name.
+5. Select **Deploy Web app** task and verify you have valid **Azure subscription** selected in the task and select **PartsUnlimited-Web-XXXXXXXX** in App service name which was provisioned using **Deploy to Azure**
 
 
    ![deploywebapptask](images/deploywebapptask.png)
 
-6. Select **Deploy API** task and verify you have valid **Azure subscription** selected in the task and **PartsunlimitedAPI** is selected in App service name.
+6. Select **Deploy API** task and verify you have valid **Azure subscription** selected in the task and select **PartsUnlimited-API-XXXXXXXX** in App service name which was provisioned using **Deploy to Azure**
 
 
    ![deployapitask](images/deployapitask.png)
 
-7. Click on **Create Release** to trigger the deployment.
+7. Save the changes and Click on **Create Release** and select **Create** on the Create New Release window to trigger the deployment.
 
    ![triggertherelease](images/triggerrelease.png)
+
+   ![createnewrelease](images/createnewrelease.png)
   
-8. Open the triggered release to see the deployment progress. Once the deployment completes, you can check that the site is deployed successfully by navigating to the site url.
+8. Open the triggered release to see the deployment progress. 
+
+   ![clickonrelease](images/clickonrelease.png)
+
+   ![releaseoutcome](images/releaseoutcome.png)
+
+   Once the deployment completes, you can check that the site is deployed successfully by navigating to the site url.
 
    http://{Your_WebApp_Name}.azurewebsites.net
 
@@ -328,7 +335,7 @@ You will see a build has been queued. Click on the Build number to see the progr
 
 ## Exercise 4:  Set up an Azure Function.
 
-In this exercise we will create **Azure Function App** from Azure portal. Azure Function App is the container that hosts the execution of individual functions. A function app lets you group functions as a logic unit for easier management, deployment, and sharing of resources. Then we will create Azure Functions project in PartsUnlimited Solution.
+Azure Function App is the container that hosts the execution of individual functions. A function app lets you group functions as a logic unit for easier management, deployment, and sharing of resources. In this exercise we will create **Azure Function App** from Azure portal and then we will create Azure Functions project in PartsUnlimited Solution using Visual Studio.
 
 The [Azure Function](https://azure.microsoft.com/en-in/services/functions/) created in this exercise will act as a switching proxy or mechanism to send public users to the API v1 and employees to the API v2. This Azure function will retrieve data from either API v1 or API v2 based on the user ID.
 Although we have used a simple condition here, this could also use more complex rules which could potentially be hidden behind another web api call.
@@ -356,7 +363,7 @@ Although we have used a simple condition here, this could also use more complex 
    ![functionappstatus](images/functionappstatus.png)
 
    
-6. Select your function app and click on Add icon. Choose scenario as **Webhook+ API**, **C#** language and select **create your own custom function**. Then click on **Create this function**.
+6. Select **Functions** in your function app and click on Add icon. Choose scenario as **Webhook+ API**, **C#** language and select **create your own custom function**. Then click on **Create this function**.
 
    ![createfuntion](images/createfuntion.png)
   
@@ -364,7 +371,7 @@ Although we have used a simple condition here, this could also use more complex 
 
     ![selecthttptrigger](images/selecthttptrigger.png)
 
-    Enter the details as shown below and click on Create.
+    Enter the details as shown below and click on Create. Select language as **C#** and  for Name enter **SpecialsProxy**
 
     ![httptriggerdetails](images/httptriggerdetails.png)
 
@@ -383,18 +390,19 @@ Right click on solution, then click on **Add** and select **New Project**.
 
 10. Select **cloud** under **Visual C#** category, select **Azure Functions** as the type of this project, enter **PartsUnlimited.AzureFunction** into the name field and append **\src** at the end of the location, then click on "OK".
 
-    ![azurefunctionprojdetails](images/azurefunctionprojdetails.png)
+     ![azurefunctionprojdetails](images/azurefunctionprojdetails.png)
 
-   Select **HttpTrigger** template and click on **Ok**
+     Select **HttpTrigger** template and click on **Ok**
     
+
     ![httptrigger](images/httptrigger.png)
 
 11. Expand the **PartsUnlimite.AzureFunction** project, right click on **Function 1.cs** and selct rename. Rename the file **SpecialsProxy**
 
-   ![renamefunction](images/renamefunction.png)
+    ![renamefunction](images/renamefunction.png)
 
 12. Open the **SpecialsProxy.cs** file replace the existing code with the following code.
-```csharp
+ ```csharp
 using System;
 using System.Linq;
 using System.Net;
@@ -484,7 +492,7 @@ namespace PartsUnlimited.Controllers
                 var url = "https://partsunlimitefunctionapp.azurewebsites.net/api/SpecialsProxy?code=1wsG38iUPkMaclh0zmFpZoRewYs5usBLSlOkM5JaKIF4WvbklkeQYg==";
                 if (HttpContext.User.Identity.IsAuthenticated)
                 {
-                    url += HttpContext.User.Identity.Name.Equals("Administrator@test.com") || HttpContext.User.Identity.Name.Equals("Balaji@test.com") ? "&UserID=1" : "&UserID=50";
+                    url += HttpContext.User.Identity.Name.Equals("Administrator@test.com") ? "&UserID=1" : "&UserID=50";
                 }
                 using (HttpClient client = new HttpClient())
                 {
@@ -621,17 +629,17 @@ In this exercise we will modify the Build and Release definitions to build Azure
     ![buildqueued](images/buildqueued.png)
      ![buildoutcome](images/buildoutcome.png)
 
-4. Once Build Succeeded Click on the **Releases** tab. Select **PartsUnlimite CD** release definition and click **Edit**
+4. Once Build Succeeded Click on the **Releases** tab. Select **AzureFunctions_Deploy** release definition and click **Edit**
 
    ![openreleasedef](images/openreleasedef.png)
 
 5. Click on **Dev** to view the deployment tasks in the definition
 
-    ![opendevenv](images/opendevenv.png)
+    ![opendevenv2](images/opendevenv2.png)
 
 6. You have two tasks in the release definition.
 
-   ![tasksinrelease](images/tasksinrelease.png)
+   ![tasksinrelease2](images/tasksinrelease2.png)
 
 7. Now we will add one more task to deploy Azure Function to the Function App in Azure.
 Click on **+** icon and add **Azure App Service deploy** Task
@@ -640,7 +648,15 @@ Click on **+** icon and add **Azure App Service deploy** Task
 
 8. In the new task set the following parameters as shown in image
 
+   > App Type: Function App
+
+   > App Service Name: Function App which we have created in previuous exercise
+
+   >Package or Folder: $(System.DefaultWorkingDirectory)/**/PartsUnlimited.AzureFunction.zip
+
    ![deployazurefunction](images/deployazurefunction.png)
+
+   
 
 9. Save the changes and Trigger the Release to deploy modified web site and the Azure function.
 
@@ -650,7 +666,7 @@ Click on **+** icon and add **Azure App Service deploy** Task
 
    ![releasestatus](images/releasequeue.png)
 
-   ![releasestatus](images/releasequeue.png)
+   ![releaseoutcome2](images/releaseoutcome2.png)
 
 10. Once the Release is success, you can verify Website that you deployed calls the APIs.
 
