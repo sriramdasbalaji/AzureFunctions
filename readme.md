@@ -6,22 +6,22 @@ Azure Functions is a [serverless](https://azure.microsoft.com/overview/serverles
 
 OR --->
 
-Azure Functions is an event driven, compute-on-demand experience that extends the existing Azure application platform with capabilities to implement code triggered by events occurring in Azure or third-party service as well as on-premises systems. Azure Functions allows developers to take action by connecting to data sources or messaging solutions thus making it easy to process and react to events. Developers can leverage Azure Functions to build HTTP-based API endpoints accessible by a wide range of applications, mobile and IoT devices.
+Azure Functions is an event driven, compute-on-demand experience that extends the existing Azure application platform with capabilities to implement the code triggered by events occurring in Azure or third-party service as well as on-premises systems. Azure Functions allows developers to take action by connecting to data sources or messaging solutions thus making it easy to process and react to events. Developers can leverage Azure Functions to build HTTP-based API endpoints accessible by a wide range of applications, mobile and IoT devices.
  
-**Scenario for the lab:** We are using PartsUnlimited a fictional eCommerce website. The PartsUnlimited team decides to roll out a new feature called special discounted pricing for employees of PartsUnlimited and a different discount for general users. In this lab we will implement a .Net Core Web API which will contain information about products and price (including discounts) and an Azure Function which acts as a switching mechanism to return different (discount) information based on the user logged in to the application.
+**Scenario for the lab:** In this lab, we are using a fictional eCommerce website - PartsUnlimited. The PartsUnlimited team decides to roll out a new feature called **special discount for *employees of PartsUnlimited*** and a **different discount for *general users***. In this lab, we will implement a .Net Core Web API which will contain information about products and price (including discounts) and an Azure Functions which acts as a switching mechanism to return different (discount) information based on the user logged in to the application.
 
- ## What's covered in this lab?
+ ## What is covered in this lab?
 
  In this lab, you will
 
 * Provision a Team Services project with application data using DemoGenerator system.
-* Clone the PartsUnlimited solution form the created Team Project
-* Create API endpoints project in the PartsUnlimited solution
-* Set Up Azure function in portal
-* Create Azure Function Project in the PartsUnlimited solution
-* Update Website to retrieve products on special from API
+* Clone the PartsUnlimited solution from the created Team Project
+* Create API project in the PartsUnlimited solution
+* Set Up Azure functions in portal
+* Create Azure Functions project in the PartsUnlimited solution
+* Update website to retrieve special discounted products based on the login from API
 * Setup a build definition to build and test the code
-* Setup Azure Web app and configure a CD pipeline in VSTS for Website, API and Azure function
+* Setup Azure Web App and configure a CD pipeline in VSTS for Website, API and Azure Functions
 
 ## Pre-requisites for the lab
 
@@ -41,7 +41,7 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
 ## Setting up the Environment
 
-1. Click **Deploy To Azure** to provision a Azure appservice plan and two web apps.
+1. Click **Deploy To Azure** to provision an Azure App service plan with two web apps.
 
    [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsriramdasbalaji%2FAzureFunctions%2Fmaster%2Farm%2520template%2Fazuredeploy.json)
 
@@ -75,31 +75,31 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
      ![clonetherepo](images/clonetherepo.png)
 
-3. You might be prompted to sign into to your account from Visual Studio. Sign in to your account
+3. An instance of **Visual Studio** opens and you might be prompted to sign into to your account. Sign in to your account
 
 4. Set the local path where you want the local repository to be placed and select **Clone**.
 
      ![clonepath](images/clonepath.png)
 
-5. In Team Explorer under **Solutions** you will see all the solutions in the local git folder and double click on **PartsUnlimited.sln** to open the project.
+5. In Team Explorer under **Solutions**, you will see the list of solutions within the local git folder and double click on **PartsUnlimited.sln** to open the project.
 
      ![openproject](images/opensolution.png)
 
-## Exercise 2:  Create API endpoints
+## Exercise 2:  Create API for discounts
 
- In this exercise you will create two versions of an API. The first API to display the products with price for public/general user of the site, the second one with more discounts for employees.
+ In this exercise, you will create two versions of an API. The first API to display the products with price for public/general user of the site, the second one with more discounts for employees.
 
- 1. Create a new API project in **PartsUnlimited** solution. Right click on solution, then click on **Add** and select **New Project...**
+ 1. *Create a new API project in **PartsUnlimited** solution* - Right click on solution, then click on **Add** and select **New Project...**
 
- 2. Select **Web** under "Visual C#" category, select **ASP.NET Core Web Application (.NET Core)** as the type of this project, enter **PartsUnlimited.API** into the name field and append **\src** at the end of the location, then click on "OK".
+ 2. Select **Web** under "Visual C#" category, select **ASP.NET Core Web Application (.NET Core)** as the type of this project, enter **PartsUnlimited.API** in the name field and append **\src** at the end in the **Location** field, then click on "OK".
 
      ![createapiproject](images/createapiproject.png)
 
-3. Select Web API template, and click on "OK".
+3. Select **Web API** template, and click on "OK".
  
    ![selectapiproject](images/selectapiproject.png)
 
-4. Reference PartsUnlimited.Models from your API project. Right click on your API project's **Dependencies**, then click on **Add Reference...**.
+4. *Reference PartsUnlimited.Models from your API project* - Right click on your API project's **Dependencies**, then click on **Add Reference...**.
 
    ![clickaddreference](images/clickaddreference.png)
 
@@ -107,7 +107,7 @@ Azure Functions is an event driven, compute-on-demand experience that extends th
 
     ![addreference](images/addreference.png)
 
-6.  Define the original API. Right click on **Controllers** folder, click on **Add**, then select **Class**.
+6.  *Define the original API* - Right click on **Controllers** folder, click on **Add**, then select **Class**.
    ![addspecialcontroller](images/addspecialcontroller.png)
 
 7. Enter **SpecialsController.cs** as the name of this class and click on **Add**.
@@ -182,7 +182,7 @@ namespace PartsUnlimited.API.Controllers
 
 ```
 
-9. Define an API with a new feature.
+9. *Define an API with a new feature* -
 Similarly create a new class under Controllers, name it **V2SpecialsController.cs** and copy the following code into it:
 
 ```csharp
@@ -252,29 +252,29 @@ namespace PartsUnlimited.API.Controllers
 }
 ```
 
- >**Note:** For the demo purposes the new feature here is just modification of text for each product and different discount percentage % for employees on special.
+ >**Note:** For the purpose of this lab, the new feature here is just modification of text for each product and different discount percentage % for employees on special.
 
- 10. Click on **Changes** in **Team Explorer** and push the changes to the server
+ 10. Click on **Changes** section in **Team Explorer** and push the changes to the server by clicking **Commit All and Push** option from the drop down.
 
       ![pushapiproject](images/pushapiproject.png)
 
 ## Exercise 3: Build and Deploy Web and API projects to Azure
 
-In this exercise we will Build and Deploy the PartsUnlimited website project and API projects to Azure app services
+In this exercise, we will build and deploy the PartsUnlimited website project and API projects to Azure app services
 
-1. In your VSTS account click on **Build and Release** hub and select **AzureFunctions-Build** and click on **Edit**
+1. In your VSTS account, click on **Build and Release** hub and select **AzureFunctions-Build** and click on **Edit**
 
    ![openbuilddefinition](images/openbuilddefinition.png)
 
-2. Add **src\PartsUnlimited.API\PartsUnlimited.API.csproj** in Publish Task and then click on **Save & Queue**. 
-You will see a build has been queued. Click on the Build number to see the progress
+2. Add **src\PartsUnlimited.API\PartsUnlimited.API.csproj** in *Publish Task* and then click on **Save & Queue**. 
+You will see a build has been queued. Click on the Build number to see the build progress
     ![addapiprojtopublish](images/addapiprojtopublish.png)
 
     ![buildqueued](images/buildqueued.png)
 
     ![buildoutcome](images/buildoutcome.png)
 
-3. Once the Build is succeeded Click on the **Releases** tab. Select **AzureFunctions_Deploy** release definition and click **Edit**
+3. Once the Build is succeeded, click on the **Releases** tab. Select **AzureFunctions_Deploy** release definition and click **Edit**
 
    ![openreleasedef](images/openreleasedef.png)
 
@@ -284,13 +284,13 @@ You will see a build has been queued. Click on the Build number to see the progr
  
    You will see two tasks in the release definition.
 
-   **Deploy Web App**: This task will deploy Parts unlimited website project to the Azure App service
+   **Deploy Web App**: This task will deploy *Parts unlimited website* project to the Azure App service
 
-   **Deploy API**: This task will deploy API project which we have created earlier to the Azure app service.
+   **Deploy API**: This task will deploy *API project* which we have created earlier to the Azure app service.
 
    ![tasksinrelease](images/tasksinrelease.png)
 
-5. Select **Deploy Web app** task and verify you have valid **Azure subscription** selected in the task and select **PartsUnlimited-Web-XXXXXXXX** in App service name which was provisioned using **Deploy to Azure**
+5. Select **Deploy Web app** task and verify you have valid **Azure subscription** selected in the task and select **PartsUnlimited-Web-XXXXXXXX** in App service name which was provisioned earlier by click of **Deploy to Azure** button.
 
 
    ![deploywebapptask](images/deploywebapptask.png)
@@ -300,7 +300,7 @@ You will see a build has been queued. Click on the Build number to see the progr
 
    ![deployapitask](images/deployapitask.png)
 
-7. Save the changes and Click on **Create Release** and select **Create** on the Create New Release window to trigger the deployment.
+7. Save the changes and click on **Create Release** and select **Create** on the Create New Release window to trigger the deployment.
 
    ![triggertherelease](images/triggerrelease.png)
 
@@ -318,31 +318,33 @@ You will see a build has been queued. Click on the Build number to see the progr
 
    ![browsesite](images/browsesite.png)
 
-   Click on **Oil** category in the site. Have a look on current details on the products. We will see different details on the products once we implement Azure Functions with switching flag in the coming exercises.
+   Click on **Oil** category in the site and view the details of the products. We will see different details on the products once we implement Azure Functions with switching flag in the coming exercises.
    
       ![oilcategory](images/oilcategory.png)
 
-9. To verify that the API project is deployment, copy the API service url ( http://{API_webapp_name}.azurewebsites.net) and add **/api/v1/specials/GetSpecialsByUserId?id=1** at the end and see the output of your API. It should return JSON as below
+9. To verify that the API project is deployment, copy the API service url ( **http://{API_webapp_name}.azurewebsites.net** ) and 
+
+   - Add **/api/v1/specials/GetSpecialsByUserId?id=1** at the end and see the output of your API. It should return JSON as below
 
    ![apispecialsv1](images/apispecialsv1.png)
 
-   same way for V2 **/api/v2/specials/GetSpecialsByUserId?id=1** as well, it should return a slightly different JSON back.
+   - Add for V2 **/api/v2/specials/GetSpecialsByUserId?id=1**  at the end and see the output of your API. It should return JSON as below
 
    ![apispecialsv2](images/apispecialsv2.png)
 
 
-   Note down the URI's, you will need it later on for Azure Function.
+   Note down the URIs, you will need it later for Azure Functions.
 
-## Exercise 4:  Set up an Azure Function.
+## Exercise 4:  Set up an Azure Functions
 
-Azure Function App is the container that hosts the execution of individual functions. A function app lets you group functions as a logic unit for easier management, deployment, and sharing of resources. In this exercise we will create **Azure Function App** from Azure portal and then we will create Azure Functions project in PartsUnlimited Solution using Visual Studio.
+Azure Functions App is the container that hosts the execution of individual functions. A function app lets you group functions as a logic unit for easier management, deployment, and sharing of resources. In this exercise, we will create **Azure Function App** from Azure portal and then we will create Azure Functions project in PartsUnlimited Solution using Visual Studio.
 
-The [Azure Function](https://azure.microsoft.com/en-in/services/functions/) created in this exercise will act as a switching proxy or mechanism to send public users to the API v1 and employees to the API v2. This Azure function will retrieve data from either API v1 or API v2 based on the user ID.
+The [Azure Functions](https://azure.microsoft.com/en-in/services/functions/) created in this exercise will act as a switching proxy or mechanism to send public users to the API v1 and employees to the API v2. This Azure Functions will retrieve data from either API v1 or API v2 based on the user ID.
 Although we have used a simple condition here, this could also use more complex rules which could potentially be hidden behind another web api call.
 
 1. Open [Azure Portal](https://portal.azure.com) and login with your account.
 
-2. Click on **Resources Groups**, select the resource group you deployed your API and web project to, then on **Overview** page click on **Add**.
+2. Click on **Resources Groups**, select the resource group you deployed your API and Web project, then on **Overview** page click on **Add**.
 
    ![addazurefunction](images/addazurefunction.png)
 
@@ -358,7 +360,7 @@ Although we have used a simple condition here, this could also use more complex 
 
     ![openazurefunction](images/openazurefunction.png)
 
-   You can see Function App is deployed successfully and status is Running
+   You can see Function App is deployed successfully and status of the app as *Running*
 
    ![functionappstatus](images/functionappstatus.png)
 
@@ -375,7 +377,7 @@ Although we have used a simple condition here, this could also use more complex 
 
     ![httptriggerdetails](images/httptriggerdetails.png)
 
-8. Once Function got created select the Function and click on **Get Function Url**
+8. Once the Function is created, select the Function and click on **Get Function Url**
    
    ![getfunctionurl](images/getfunctionurl.png)
 
@@ -383,25 +385,25 @@ Although we have used a simple condition here, this could also use more complex 
 
    ![copyurl](images/copyurl.png)
 
-9. Now we will create Azure Function Project using Visual Studio in PartsUnlimited solution. Then we will Build and Deploy Azure Function using VSTS. In this Azure Function Project we will write code to redirect the API v1/v2 based on the User login. 
+9. Now we will create Azure Functions Project using Visual Studio in PartsUnlimited solution. Then we will build and deploy Azure Functions using VSTS. In this Azure Functions Project, we will write code to redirect the API v1/v2 based on the user login. 
 Right click on solution, then click on **Add** and select **New Project**.
 
    ![createazurefunctionproject](images/createazurefunctionproject.png)
 
-10. Select **cloud** under **Visual C#** category, select **Azure Functions** as the type of this project, enter **PartsUnlimited.AzureFunction** into the name field and append **\src** at the end of the location, then click on "OK".
+10. Select **Cloud** under **Visual C#** category, select **Azure Functions** as the type of this project, enter **PartsUnlimited.AzureFunction** into the name field and append **\src** at the end of the location, then click on "OK".
 
      ![azurefunctionprojdetails](images/azurefunctionprojdetails.png)
 
-     Select **HttpTrigger** template and click on **Ok**
+     Select **HttpTrigger** template and click on **OK**
     
 
     ![httptrigger](images/httptrigger.png)
 
-11. Expand the **PartsUnlimite.AzureFunction** project, right click on **Function 1.cs** and selct rename. Rename the file **SpecialsProxy**
+11. Expand the **PartsUnlimited.AzureFunction** project, right click on **Function 1.cs** and select **Rename**. Rename the file as **SpecialsProxy**
 
     ![renamefunction](images/renamefunction.png)
 
-12. Open the **SpecialsProxy.cs** file replace the existing code with the following code.
+12. Open the **SpecialsProxy.cs** file, replace the existing code with the following code.
  ```csharp
 using System;
 using System.Linq;
@@ -435,7 +437,7 @@ namespace PartsUnlimited.AzureFunction
 
 ## Exercise 5: Update Website to retrieve products on special from API.
 
-At the current time of this feature deployment we want only administrator to see it, so you will assign UserID 1 to administrator's account, every other account will have UserID 50.
+At the current time of this feature deployment, we want only administrator to see it, so you will assign UserID 1 to administrator's account, every other account will have UserID 50.
 >Note: For demo purposes only admin will be redirected to v2 controller. Ideally users should be assigned to some groups, each representing either a region or some other factor the products on special could differ on.
 
 1.  Open StoreController located at PartsUnlimitedWebsite > Controllers > StoreController.cs
@@ -526,8 +528,8 @@ namespace PartsUnlimited.Controllers
 }
 ```
 >Note 
-1. You have to replace url variable's value with your full Azure Function's URL which we have copied in **Exercise 4** including its code parameter at the end.
-2. Only Administrator@test.com will be able to see version 2 of the API output. Credentials for this account can be found bellow or in config.json file which is located in the root of PartsUnlimitedWebsite project:
+>1. You have to replace url variable's value with your full Azure Function's URL which we have copied in **Exercise 4** including its code parameter at the end.
+>2. Only Administrator@test.com will be able to see version 2 of the API output. Credentials for this account can be found bellow or in config.json file which is located in the root of PartsUnlimitedWebsite project:
   ```csharp
   "AdminRole": {
     "UserName": "Administrator@test.com",
@@ -670,9 +672,10 @@ Click on **+** icon and add **Azure App Service deploy** Task
 
 10. Once the Release is success, you can verify Website that you deployed calls the APIs.
 
-## Exercise 7: Verify Website.
+## Exercise 7: Verify Website
 
 1. Browse youe website and Navigate to **Oil** category without logging in, notice that products have V1 in their names, and showing Discount as 10% indicating they have been received from the original V1 controller which is for public users.
+
 ![verifywebsiteV1](images/verifywebsiteV1.png)
 
 2. Log in as user Administrator@test.com with password **YouShouldChangeThisPassword1!** and navigate to Oil category again. You will notice that for this user Azure function routes the request to V2 controller (which is for Employees) and shows V2 products and Discount 30%
